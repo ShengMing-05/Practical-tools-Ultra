@@ -64,12 +64,12 @@
 - **权限要求**: 存储权限（可选）
 
 ## 🛠️ 技术架构
-· Practical-tools Ultra/
-· ├──index.html          # 主界面文件
-· ├──activity.js         # 功能逻辑文件
-· ├──webapp.json         # 应用配置文件
-· ├──favicon.png         # 应用图标
-· └──README.md           # 项目说明文档
+- Practical-tools Ultra/
+- ├──index.html          # 主界面文件
+- ├──activity.js         # 功能逻辑文件
+- ├──webapp.json         # 应用配置文件
+- ├──favicon.png         # 应用图标
+- └──README.md           # 项目说明文档
 
 基于 **WebApp 框架** 开发，利用私有 API 实现丰富的系统功能。
 
@@ -77,11 +77,11 @@
 
 使用支持以下私有 API 的 WebApp 编译器：
 
-  · "webapp.显示文本提示": "显示Toast消息",
-  · "webapp.获取系统版本": "获取Android API级别", 
-  · "webapp.设置亮度参数": "调节屏幕亮度",
-  · "webapp.执行JAVA": "执行Java代码",
-  · // ... 更多API
+  - "webapp.显示文本提示": "显示Toast消息",
+  - "webapp.获取系统版本": "获取Android API级别", 
+  - "webapp.设置亮度参数": "调节屏幕亮度",
+  - "webapp.执行JAVA": "执行Java代码",
+  - // ... 更多API
 
 ## 🎯 使用技巧
 

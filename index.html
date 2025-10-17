@@ -1,0 +1,853 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Practical-tools Ultra</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --danger: #ef4444;
+            --purple: #8b5cf6;
+            --pink: #ec4899;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.98);
+            --glass: rgba(255, 255, 255, 0.15);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(160deg, #667eea 0%, #764ba2 30%, #0f172a 100%);
+            background-attachment: fixed;
+            color: var(--light);
+            line-height: 1.5;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* 头部样式 */
+        header {
+            text-align: center;
+            padding: 20px 0 15px 0;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .header-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+            opacity: 0.3;
+            filter: blur(40px);
+            z-index: -1;
+            animation: pulse-glow 4s ease-in-out infinite alternate;
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.2; transform: translate(-50%, -50%) scale(0.9); }
+            50% { opacity: 0.4; transform: translate(-50%, -50%) scale(1.1); }
+        }
+        
+        .app-title {
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 5px;
+            background: linear-gradient(135deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3, #54a0ff);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbow 6s ease infinite, glow-pulse 2s ease-in-out infinite alternate;
+            text-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+        }
+        
+        @keyframes rainbow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        @keyframes glow-pulse {
+            0% { filter: brightness(1); }
+            100% { filter: brightness(1.3); }
+        }
+        
+        .subtitle {
+            font-size: 14px;
+            opacity: 0.8;
+            font-weight: 400;
+        }
+        
+        /* 快速状态栏 */
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .stat-card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:active {
+            transform: scale(0.98);
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            opacity: 0.8;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+        
+        .stat-value {
+            font-size: 14px;
+            font-weight: 700;
+        }
+        
+        /* 标签页导航 */
+        .tab-nav {
+            display: flex;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: 10px 8px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .tab-btn.active {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 标签页内容 */
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* 卡片样式 */
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .card:active {
+            transform: scale(0.995);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            padding: 14px 16px;
+            font-weight: 700;
+            color: white;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .card-body {
+            padding: 0;
+        }
+        
+        /* 工具网格 */
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            padding: 12px;
+        }
+        
+        .tool-item {
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-radius: 12px;
+            padding: 15px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .tool-item:active {
+            transform: scale(0.95);
+            background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+        }
+        
+        .tool-icon {
+            font-size: 24px;
+            margin-bottom: 6px;
+            display: block;
+        }
+        
+        .tool-name {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        /* 高级工具网格 */
+        .advanced-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            padding: 12px;
+        }
+        
+        .advanced-item {
+            background: linear-gradient(135deg, var(--secondary), #059669);
+            color: white;
+            border-radius: 12px;
+            padding: 16px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .advanced-item:active {
+            transform: scale(0.95);
+        }
+        
+        /* 设置项样式 */
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+        
+        .setting-label {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 14px;
+        }
+        
+        /* 开关样式 */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider-toggle {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #cbd5e1;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider-toggle:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background: white;
+            transition: .4s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        input:checked + .slider-toggle {
+            background: linear-gradient(135deg, var(--secondary), #059669);
+        }
+        
+        input:checked + .slider-toggle:before {
+            transform: translateX(24px);
+        }
+        
+        /* 滑块样式 */
+        .slider-container {
+            padding: 16px;
+        }
+        
+        .slider-group {
+            margin-bottom: 16px;
+        }
+        
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 14px;
+        }
+        
+        .slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #e2e8f0;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(99, 102, 241, 0.3);
+            border: 2px solid white;
+        }
+        
+        /* 按钮样式 */
+        .btn-group {
+            padding: 12px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 14px 16px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .btn:active {
+            transform: scale(0.98);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+        }
+        
+        .btn-accent {
+            background: linear-gradient(135deg, var(--accent), #d97706);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #dc2626);
+        }
+        
+        /* 结果面板 */
+        .result-panel {
+            background: var(--dark);
+            border-radius: 12px;
+            padding: 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #10b981;
+            margin-top: 12px;
+            line-height: 1.4;
+        }
+        
+        .result-panel::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .result-panel::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+        }
+        
+        .result-panel::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 2px;
+        }
+        
+        /* 模态框 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideIn 0.3s ease;
+        }
+        
+        @keyframes modalSlideIn {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--dark);
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* 网页浏览器 */
+        .browser-controls {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .url-input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+        }
+        
+        .browser-btn {
+            padding: 12px 16px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .web-browser {
+            width: 100%;
+            height: 400px;
+            border: none;
+            border-radius: 8px;
+            background: white;
+        }
+        
+        /* 底部信息 */
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 11px;
+            padding: 15px 0;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 360px) {
+            .tool-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .app-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 网页浏览器模态框 -->
+    <div class="modal" id="browserModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">🌐 网页浏览器</h2>
+                <button class="close-modal" onclick="closeBrowser()">×</button>
+            </div>
+            <div class="browser-controls">
+                <input type="url" class="url-input" id="urlInput" placeholder="输入网址" value="https://m.baidu.com">
+                <button class="browser-btn" onclick="loadWebPage()">前往</button>
+            </div>
+            <iframe class="web-browser" id="webBrowser"></iframe>
+        </div>
+    </div>
+    
+    <!-- 应用信息模态框 -->
+    <div class="modal" id="infoModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">📱 应用信息</h2>
+                <button class="close-modal" onclick="closeInfo()">×</button>
+            </div>
+            <div id="appInfoContent" style="color: var(--dark); line-height: 1.6; font-size: 14px;"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="header-glow"></div>
+            <h1 class="app-title">Practical-tools Ultra</h1>
+            <div class="subtitle">超级 Android 工具箱 · 专为移动端优化</div>
+        </header>
+        
+        <div class="quick-stats">
+            <div class="stat-card" onclick="showDeviceInfo()">
+                <div class="stat-label">系统版本</div>
+                <div class="stat-value" id="systemVersion">获取中...</div>
+            </div>
+            <div class="stat-card" onclick="checkStoragePermission()">
+                <div class="stat-label">存储权限</div>
+                <div class="stat-value" id="storagePermission">检查中...</div>
+            </div>
+            <div class="stat-card" onclick="showAppInfoModal()">
+                <div class="stat-label">应用版本</div>
+                <div class="stat-value" id="appVersion">4.0</div>
+            </div>
+            <div class="stat-card" onclick="showDeviceInfo()">
+                <div class="stat-label">设备状态</div>
+                <div class="stat-value">🟢 正常</div>
+            </div>
+        </div>
+        
+        <!-- 标签页导航 -->
+        <div class="tab-nav">
+            <button class="tab-btn active" onclick="switchTab('tools')">🔧 工具</button>
+            <button class="tab-btn" onclick="switchTab('system')">⚙️ 系统</button>
+            <button class="tab-btn" onclick="switchTab('files')">📁 文件</button>
+            <button class="tab-btn" onclick="switchTab('advanced')">🚀 高级</button>
+        </div>
+        
+        <!-- 工具标签页 -->
+        <div id="tools-tab" class="tab-content active">
+            <div class="card">
+                <div class="card-header">
+                    🚀 核心工具
+                </div>
+                <div class="card-body">
+                    <div class="tool-grid">
+                        <div class="tool-item" onclick="showTextPrompt()">
+                            <span class="tool-icon">💬</span>
+                            <div class="tool-name">文本提示</div>
+                        </div>
+                        <div class="tool-item" onclick="shareText()">
+                            <span class="tool-icon">📤</span>
+                            <div class="tool-name">分享文本</div>
+                        </div>
+                        <div class="tool-item" onclick="goHome()">
+                            <span class="tool-icon">🏠</span>
+                            <div class="tool-name">回到桌面</div>
+                        </div>
+                        <div class="tool-item" onclick="openSettings()">
+                            <span class="tool-icon">⚙️</span>
+                            <div class="tool-name">系统设置</div>
+                        </div>
+                        <div class="tool-item" onclick="openDownloadManager()">
+                            <span class="tool-icon">📥</span>
+                            <div class="tool-name">下载管理</div>
+                        </div>
+                        <div class="tool-item" onclick="showAppInfoModal()">
+                            <span class="tool-icon">ℹ️</span>
+                            <div class="tool-name">应用信息</div>
+                        </div>
+                        <div class="tool-item" onclick="checkForUpdates()">
+                            <span class="tool-icon">🔄</span>
+                            <div class="tool-name">检查更新</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    📱 设备控制
+                </div>
+                <div class="card-body">
+                    <div class="tool-grid">
+                        <div class="tool-item" onclick="vibrateDevice()">
+                            <span class="tool-icon">📳</span>
+                            <div class="tool-name">设备震动</div>
+                        </div>
+                        <div class="tool-item" onclick="takeRealScreenshot()">
+                            <span class="tool-icon">📸</span>
+                            <div class="tool-name">高级截图</div>
+                        </div>
+                        <div class="tool-item" onclick="openWebBrowser()">
+                            <span class="tool-icon">🌐</span>
+                            <div class="tool-name">网页浏览</div>
+                        </div>
+                        <div class="tool-item" onclick="showNotification()">
+                            <span class="tool-icon">🔔</span>
+                            <div class="tool-name">状态通知</div>
+                        </div>
+                        <div class="tool-item" onclick="createShortcut()">
+                            <span class="tool-icon">🔗</span>
+                            <div class="tool-name">创建快捷</div>
+                        </div>
+                        <div class="tool-item" onclick="sendBroadcast()">
+                            <span class="tool-icon">📡</span>
+                            <div class="tool-name">发送广播</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 系统标签页 -->
+        <div id="system-tab" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    🎨 显示设置
+                </div>
+                <div class="card-body">
+                    <div class="setting-item">
+                        <div class="setting-label">全屏模式</div>
+                        <label class="switch">
+                            <input type="checkbox" id="fullscreenToggle" onchange="toggleFullscreen(this.checked)">
+                            <span class="slider-toggle"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">横屏模式</div>
+                        <label class="switch">
+                            <input type="checkbox" id="landscapeToggle" onchange="toggleLandscape(this.checked)">
+                            <span class="slider-toggle"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">屏幕常亮</div>
+                        <label class="switch">
+                            <input type="checkbox" id="keepScreenOnToggle" onchange="toggleKeepScreenOn(this.checked)">
+                            <span class="slider-toggle"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-label">无图模式</div>
+                        <label class="switch">
+                            <input type="checkbox" id="noImageToggle" onchange="toggleNoImage(this.checked)">
+                            <span class="slider-toggle"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    🔆 亮度与音量
+                </div>
+                <div class="card-body">
+                    <div class="slider-container">
+                        <div class="slider-group">
+                            <div class="slider-label">
+                                <span>屏幕亮度</span>
+                                <span id="brightnessValue">128</span>
+                            </div>
+                            <input type="range" min="0" max="255" value="128" class="slider" id="brightnessSlider" oninput="updateBrightness(this.value)">
+                        </div>
+                        <div class="slider-group">
+                            <div class="slider-label">
+                                <span>媒体音量</span>
+                                <span id="volumeValue">8</span>
+                            </div>
+                            <input type="range" min="0" max="15" value="8" class="slider" id="volumeSlider" oninput="updateVolume(this.value)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 文件标签页 -->
+        <div id="files-tab" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    📁 文件管理
+                </div>
+                <div class="card-body">
+                    <div class="tool-grid">
+                        <div class="tool-item" onclick="listFiles()">
+                            <span class="tool-icon">📁</span>
+                            <div class="tool-name">文件列表</div>
+                        </div>
+                        <div class="tool-item" onclick="createTestFile()">
+                            <span class="tool-icon">📄</span>
+                            <div class="tool-name">创建文件</div>
+                        </div>
+                        <div class="tool-item" onclick="checkExternalStorage()">
+                            <span class="tool-icon">💾</span>
+                            <div class="tool-name">存储信息</div>
+                        </div>
+                        <div class="tool-item" onclick="clearAppData()">
+                            <span class="tool-icon">🧹</span>
+                            <div class="tool-name">清理缓存</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    🛡️ 权限管理
+                </div>
+                <div class="card-body">
+                    <div class="btn-group">
+                        <button class="btn" onclick="requestStoragePermission()">申请存储权限</button>
+                        <button class="btn btn-secondary" onclick="requestBatteryOptimization()">申请电池优化</button>
+                        <button class="btn btn-accent" onclick="checkAllPermissions()">检查所有权限</button>
+                        <button class="btn btn-danger" onclick="clearAllData()">清理所有数据</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 高级标签页 -->
+        <div id="advanced-tab" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    ⚡ 高级功能
+                </div>
+                <div class="card-body">
+                    <div class="advanced-grid">
+                        <div class="advanced-item" onclick="executeShellCommand()">
+                            <span class="tool-icon">💻</span>
+                            <div class="tool-name">执行Shell</div>
+                        </div>
+                        <div class="advanced-item" onclick="networkTools()">
+                            <span class="tool-icon">📶</span>
+                            <div class="tool-name">网络工具</div>
+                        </div>
+                        <div class="advanced-item" onclick="systemMonitor()">
+                            <span class="tool-icon">📊</span>
+                            <div class="tool-name">系统监控</div>
+                        </div>
+                        <div class="advanced-item" onclick="developerTools()">
+                            <span class="tool-icon">🔧</span>
+                            <div class="tool-name">开发者工具</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    🔧 系统工具
+                </div>
+                <div class="card-body">
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" onclick="restartApp()">重启应用</button>
+                        <button class="btn btn-accent" onclick="exportLogs()">导出日志</button>
+                        <button class="btn btn-danger" onclick="emergencyClean()">紧急清理</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 结果输出面板 -->
+        <div class="result-panel" id="resultPanel">
+            <div style="color: #f59e0b; font-weight: bold;">🚀 Practical-tools Ultra 已就绪</div>
+            <div style="color: #94a3b8; margin-top: 5px;">等待执行命令...</div>
+        </div>
+        
+        <footer>
+            Practical-tools Ultra &copy; 2025 | 神明_05(shengming-05) 开发｜YZH Team | 版本 4.0
+        </footer>
+    </div>
+
+    <script src="activity.js"></script>
+    </body>
+    </html>

@@ -1,0 +1,16 @@
+{
+   "图标": "favicon.png",
+   "名称": "Practical-toolUltra",
+   "包名": "webapp.com.smlf.practical.tools.ultra",
+   "版名": "4.0",
+   "版号": "4",
+   "内容": "index.html",
+   "全屏": false,
+   "横屏": false,
+   "端口": "",
+   "脚本": "webapp.设置状态栏变色('#0a0a16');webapp.设置下拉刷新(false);webapp.设置加载效果(false);webapp.设置缓存模式(true);",
+   "标识": "Mozilla/5.0 (Linux; Android 13; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36",
+   "协议": "ptoolsu",
+   "拦截": "",
+   "加密": ""
+}
